@@ -1,62 +1,33 @@
 import { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Popconfirm, Table, Typography, Button } from 'antd';
+import { Form, Popconfirm, Table, Typography, Button } from 'antd';
 import UserApi from '../api/index';
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import { EditableCell } from './EditableCell';
 
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
+const API_URL = 'http://localhost:3001/users'
+
 export const UserTable = () => {
-  const api = new UserApi('http://localhost:3001/users')
+  const api = new UserApi(API_URL)
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
   const isEditing = (record) => record.key === editingKey;
 
-  const showModal = () => {
-    let NewData = [...data]
+  const addUser = () => {
+    let newData = [...data]
     let emptyItem = {
-      key: Date.now(),
+      key: 0,
       name: '',
       email: '',
       website: '',
       address: '',
     }
-    NewData.unshift(emptyItem)
-    setData(NewData)
+    window.scrollTo(0, document.body.scrollHeight);
+    newData.push(emptyItem)
+    setData(newData)
     edit(emptyItem)
   };
+
   const edit = (record) => {
     form.setFieldsValue({
       name: '',
@@ -67,15 +38,18 @@ export const UserTable = () => {
     });
     setEditingKey(record.key);
   };
+
   const remove = async (id) => {
     const res = await api.deleteUser(id);
     if (res.status === 200) {
       setData(data.filter(e => e.id !== id))
     };
   }
+
   const cancel = () => {
     setEditingKey('');
   };
+
   const save = async (key) => {
     try {
       const row = await form.validateFields();
@@ -85,8 +59,7 @@ export const UserTable = () => {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
         setData(newData);
-        console.log(row);
-        await api.updateUser(key, row)
+        editingKey !== 0 ? api.updateUser(key, row) : api.addNewUser(row)
         await api.getUsers()
         setEditingKey('');
       } else {
@@ -102,42 +75,21 @@ export const UserTable = () => {
   useEffect(() => {
     async function fetchUsers() {
       let response = await api.getUsers()
-      const data = response.data.map(u => {
-        return {
-          key: u.id,
-          ...u
-        }
-      })
+      const data = response.data.map(u => ({ key: u.id, ...u }))
       setData(data);
     }
     fetchUsers()
   }, []);
 
+  const similarColumns = ['name', 'address', 'website', 'email'].map(e => ({
+    title: e,
+    dataIndex: e,
+    width: '25%',
+    editable: true,
+  }))
+
   const columns = [
-    {
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%',
-      editable: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-      width: '25%',
-      editable: true,
-    },
-    {
-      title: 'website',
-      dataIndex: 'website',
-      width: '25%',
-      editable: true,
-    },
-    {
-      title: 'email',
-      dataIndex: 'email',
-      width: '40%',
-      editable: true,
-    },
+    ...similarColumns,
     {
       title: 'operation',
       dataIndex: 'operation',
@@ -170,6 +122,7 @@ export const UserTable = () => {
       },
     },
   ];
+
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
@@ -185,16 +138,13 @@ export const UserTable = () => {
       }),
     };
   });
+  
   return (
     <>
-      <Button onClick={showModal}>Create User</Button>
+      <Button onClick={addUser}>Create User</Button>
       <Form form={form} component={false}>
         <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
+          components={{ body: { cell: EditableCell, }, }}
           bordered
           dataSource={data}
           columns={mergedColumns}
