@@ -13,27 +13,24 @@ export const UserTable = () => {
   const [editingKey, setEditingKey] = useState('');
   const isEditing = (record) => record.key === editingKey;
 
+  const emptyItem = {
+    name: '',
+    email: '',
+    website: '',
+    address: '',
+  };
+
   const addUser = () => {
     let newData = [...data]
-    let emptyItem = {
-      key: 0,
-      name: '',
-      email: '',
-      website: '',
-      address: '',
-    }
-    window.scrollTo(0, document.body.scrollHeight);
-    newData.push(emptyItem)
+    newData.push({ key: 0, ...emptyItem })
     setData(newData)
-    edit(emptyItem)
+    window.scrollTo(0, document.body.scrollHeight);
+    edit({ key: 0, ...emptyItem })
   };
 
   const edit = (record) => {
     form.setFieldsValue({
-      name: '',
-      email: '',
-      website: '',
-      address: '',
+      ...emptyItem,
       ...record,
     });
     setEditingKey(record.key);
@@ -97,17 +94,10 @@ export const UserTable = () => {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <Typography.Link
-              onClick={() => save(record.key)}
-              style={{
-                marginRight: 8,
-              }}
-            >
+            <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8, }}>
               Save
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
+            <Popconfirm title="Sure to cancel?" onConfirm={cancel}><a>Cancel</a></Popconfirm>
           </span>
         ) : (
           <>
@@ -138,10 +128,10 @@ export const UserTable = () => {
       }),
     };
   });
-  
+
   return (
     <>
-      <Button onClick={addUser}>Create User</Button>
+      <Button size='large' onClick={addUser}>Create New User</Button>
       <Form form={form} component={false}>
         <Table
           components={{ body: { cell: EditableCell, }, }}

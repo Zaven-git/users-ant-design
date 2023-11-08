@@ -1,3 +1,40 @@
 body {
     margin: 0;
 }
+
+.App {
+    scroll-behavior: smooth;
+    & .ant-btn {
+        background-image: linear-gradient(aqua, #3ad8b6, rgb(39, 223, 223));
+        margin: 20px;
+        transition-duration: 0.2s;
+        color: white;
+        &:hover {
+            background-image: linear-gradient( rgb(39, 223, 223), rgba(0, 255, 255, 0.637), #3ad8b6);
+        }
+    }
+    & .ant-table-content {
+        margin: 40px;
+        & .ant-table-thead {
+            & .ant-table-cell {
+                text-transform: capitalize;
+                background-color: rgba(127, 255, 212, 0.815);
+            }
+        }
+        & .ant-table-tbody {
+            & .ant-table-cell {
+                background-color: rgba(127, 255, 212, 0.295);
+            }
+            & .ant-typography {
+                &:first-of-type {
+                    margin-right: 10px;
+                    color: rgba(14, 214, 14, 0.856);
+                }
+                &:last-of-type {
+                    margin-left: 10px;
+                    color: rgba(255, 0, 0, 0.89);
+                }
+            }
+        }
+    }
+}

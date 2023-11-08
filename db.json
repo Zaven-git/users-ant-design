@@ -48,6 +48,13 @@
       "website": "Chonkis",
       "email": "chokins@zendaya@mail,ru",
       "id": 10
+    },
+    {
+      "name": "Nicolas",
+      "address": "Shahinyan str 1 b 1",
+      "website": "Nicolas.com",
+      "email": "nicola@company.com",
+      "id": 11
     }
   ]
 }

@@ -17,9 +17,9 @@ You may also see any lint errors in the console.
 ### `npm install -g json-server `
 In order to install json-server globally  
 
-### `json-server --watch db. --jsonport 3001`
+### `json-server --watch db.json --port 3001`
 In order to rin json-server ann use it as a mock-API 
-Open [http://localhost:300/users] to view Schema in your browser.
+Open [http://localhost:3001/users] to view Schema in your browser.
 
 
 ### `npm test`
