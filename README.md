@@ -17,6 +17,17 @@ You may also see any lint errors in the console.
 ### `npm install -g json-server `
 In order to install json-server globally  
 
+### `create db.json file in a root directory and add the following code to your json file`
+  "users": [
+    {
+      "name": "Ervin Hower",
+      "address": "Zaqyan 17s., 5b., 20a. ",
+      "website": "anastasia.net",
+      "email": "Shana@melissa.tv",
+      "id": 2
+    }, 
+  ]
+
 ### `json-server --watch db.json --port 3001`
 In order to rin json-server ann use it as a mock-API 
 Open [http://localhost:3001/users] to view Schema in your browser.

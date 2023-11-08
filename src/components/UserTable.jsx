@@ -24,7 +24,9 @@ export const UserTable = () => {
     let newData = [...data]
     newData.push({ key: 0, ...emptyItem })
     setData(newData)
-    window.scrollTo(0, document.body.scrollHeight);
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 0);
     edit({ key: 0, ...emptyItem })
   };
 
@@ -55,8 +57,15 @@ export const UserTable = () => {
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
+        if (editingKey !== 0) {
+          await api.updateUser(key, row)
+        } else {
+          let res = await api.addNewUser(row)
+          if (res.status === 200) {
+            newData.push(res.data)
+          }
+        }
         setData(newData);
-        editingKey !== 0 ? api.updateUser(key, row) : api.addNewUser(row)
         await api.getUsers()
         setEditingKey('');
       } else {
