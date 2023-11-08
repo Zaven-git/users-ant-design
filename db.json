@@ -1,52 +1,31 @@
 {
   "users": [
     {
-      "name": "Ervin Hower",
-      "address": "Zaqyan 17s., 5b., 20a. ",
-      "website": "anastasia.net",
-      "email": "Shana@melissa.tv",
-      "id": 2
-    },
-    {
-      "name": "Chelsey Dietrich",
-      "address": "Zaqyan 17s., 6b., 20ap. ",
-      "website": "demarco.info",
-      "email": "LucioHettinger@annie.ca",
-      "id": 5
-    },
-    {
-      "name": "Mrs. Dennis Schulist",
-      "address": "Zaqyan 17s., 6b., 22ap. ",
-      "website": "ola.org",
-      "email": "Karley_Dach@jasper.info",
-      "id": 6
-    },
-    {
-      "id": 7,
-      "address": "Zaqyan 17s., 6b., 20ap. ",
       "name": "Kurtis Weissnat",
+      "address": "Zaqyan 17s., 6b., 20ap. ",
+      "website": "elvis.i",
       "email": "Telly.Hoeger@billy.biz",
-      "website": "elvis.io"
+      "id": 7
     },
     {
-      "id": 8,
-      "address": "Zaqyan 17s., 6b., 20ap. ",
       "name": "Nicholas Runolfsdottir V",
-      "email": "Sherwood@rosamond.me",
-      "website": "jacynthe.com"
+      "address": "Zaqyan 17s., 6b., 20ap. ",
+      "website": "jacynthe.com",
+      "email": "Sherwood@rosamond.com",
+      "id": 8
     },
     {
       "name": "Zendaya",
       "address": "Washington , str 1. 1sd",
       "website": "Chonky",
-      "email": "chonky@zendaya@mail,ru",
+      "email": "chonkyzendaya@mail,ru",
       "id": 9
     },
     {
       "name": "Zendaya",
       "address": "Washington , str 1. 1sd",
       "website": "Chonkis",
-      "email": "chokins@zendaya@mail,ru",
+      "email": "chokins@zendaya@mail.ru",
       "id": 10
     },
     {
@@ -62,55 +41,6 @@
       "website": "noris.com",
       "email": "noris@gmail.com",
       "id": 12
-    },
-    {
-      "name": "Bruce Lie",
-      "address": "asa",
-      "website": "asdad.com",
-      "email": "asdasd",
-      "id": 14
-    },
-    {
-      "name": "Gor Vardanyan",
-      "address": "Yerevan",
-      "website": "gor.com",
-      "email": "gor@gmail.com",
-      "id": 15
-    },
-    {
-      "name": "ass",
-      "address": "aded",
-      "website": "asas.com",
-      "email": "afmas",
-      "id": 16
-    },
-    {
-      "name": "mksdci",
-      "address": "asldmalsmd",
-      "website": "aasdll.com",
-      "email": "asdasdmail.com",
-      "id": 17
-    },
-    {
-      "name": "mkocki",
-      "address": "knshjc",
-      "website": "lsocl.com",
-      "email": "aslcodgmail.com",
-      "id": 19
-    },
-    {
-      "name": "dasd",
-      "address": "asddsa",
-      "website": "dadasd.coma",
-      "email": "sdasd@gmail.com",
-      "id": 20
-    },
-    {
-      "name": "dasd",
-      "address": "asddsa",
-      "website": "dadasd.coma",
-      "email": "sdsd@gmail.com",
-      "id": 21
     }
   ]
 }
