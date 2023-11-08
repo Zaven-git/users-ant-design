@@ -17,7 +17,7 @@ You may also see any lint errors in the console.
 ### `npm install -g json-server `
 In order to install json-server globally  
 
-### `create db.json file in a root directory and add the following code to your json file`
+### `create db.json file if it absence in a root directory and add the following code to your json file`
   "users": [
     {
       "name": "Ervin Hower",
