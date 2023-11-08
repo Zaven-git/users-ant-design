@@ -4,6 +4,9 @@ body {
 
 .App {
     scroll-behavior: smooth;
+    &.cancel-button {
+        cursor: pointer;
+    }
     & .ant-btn {
         background-image: linear-gradient(aqua, #3ad8b6, rgb(39, 223, 223));
         margin: 20px;
@@ -13,8 +16,9 @@ body {
             background-image: linear-gradient( rgb(39, 223, 223), rgba(0, 255, 255, 0.637), #3ad8b6);
         }
     }
-    & .ant-table-content {
-        margin: 40px;
+    & .ant-table {
+        width: 94%;
+        margin: 20px auto;
         & .ant-table-thead {
             & .ant-table-cell {
                 text-transform: capitalize;

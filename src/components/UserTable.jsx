@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Form, Popconfirm, Table, Typography, Button } from 'antd';
-import UserApi from '../api/index';
+import { Form, Spin, Table, Typography, Button } from 'antd';
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { EditableCell } from './EditableCell';
-
-const API_URL = 'http://localhost:3001/users'
+import { fetchUsers, removeUser, editUser, addEmptyItem, addNewUser } from '../features/user/userSlice'
+import { useDispatch, useSelector } from 'react-redux';
 
 export const UserTable = () => {
-  const api = new UserApi(API_URL)
+  const dispatch = useDispatch()
+  const list = useSelector((state) => state.users.list);
+  const loading = useSelector((state) => state.users.loading);
   const [form] = Form.useForm();
-  const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
   const isEditing = (record) => record.key === editingKey;
 
@@ -20,10 +20,12 @@ export const UserTable = () => {
     address: '',
   };
 
+  useEffect(() => {
+    dispatch(fetchUsers())
+  }, [dispatch]);
+
   const addUser = () => {
-    let newData = [...data]
-    newData.push({ key: 0, ...emptyItem })
-    setData(newData)
+    dispatch(addEmptyItem())
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight);
     }, 0);
@@ -38,11 +40,8 @@ export const UserTable = () => {
     setEditingKey(record.key);
   };
 
-  const remove = async (id) => {
-    const res = await api.deleteUser(id);
-    if (res.status === 200) {
-      setData(data.filter(e => e.id !== id))
-    };
+  const remove = (id) => {
+    dispatch(removeUser(id));
   }
 
   const cancel = () => {
@@ -50,55 +49,31 @@ export const UserTable = () => {
   };
 
   const save = async (key) => {
-    try {
-      const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-        if (editingKey !== 0) {
-          await api.updateUser(key, row)
-        } else {
-          let res = await api.addNewUser(row)
-          if (res.status === 200) {
-            newData.push(res.data)
-          }
-        }
-        setData(newData);
-        await api.getUsers()
-        setEditingKey('');
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
-      }
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+    const row = await form.validateFields();
+    if (row && key !== 0) {
+      dispatch(editUser({ key, row }))
+    } else {
+      dispatch(addNewUser(row))
     }
+    setEditingKey('');
   };
-
-  useEffect(() => {
-    async function fetchUsers() {
-      let response = await api.getUsers()
-      const data = response.data.map(u => ({ key: u.id, ...u }))
-      setData(data);
-    }
-    fetchUsers()
-  }, []);
 
   const similarColumns = ['name', 'address', 'website', 'email'].map(e => ({
     title: e,
     dataIndex: e,
-    width: '25%',
+    width: '22%',
     editable: true,
   }))
+  similarColumns[3].responsive = ['sm']
+  similarColumns[1].responsive = ['md']
+  similarColumns[2].responsive = ['lg']
 
   const columns = [
     ...similarColumns,
     {
       title: 'operation',
       dataIndex: 'operation',
+      width: '12%',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -106,7 +81,7 @@ export const UserTable = () => {
             <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8, }}>
               Save
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}><a>Cancel</a></Popconfirm>
+            <span onClick={cancel} className='cancel-button'>Cancel</span>
           </span>
         ) : (
           <>
@@ -143,12 +118,14 @@ export const UserTable = () => {
       <Button size='large' onClick={addUser}>Create New User</Button>
       <Form form={form} component={false}>
         <Table
+          className='animated-border'
           components={{ body: { cell: EditableCell, }, }}
           bordered
-          dataSource={data}
+          loading={loading}
+          dataSource={list}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={false}
+          pagination={{ defaultPageSize: 5, position: ['bottomCenter'] }}
         />
       </Form>
     </>
