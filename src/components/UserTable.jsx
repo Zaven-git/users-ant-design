@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Form, Spin, Table, Typography, Button } from 'antd';
+import { useState, useEffect, useRef } from 'react';
+import { Form, Table, Typography, Button } from 'antd';
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { EditableCell } from './EditableCell';
 import { fetchUsers, removeUser, editUser, addEmptyItem, addNewUser } from '../features/user/userSlice'
@@ -11,6 +11,9 @@ export const UserTable = () => {
   const loading = useSelector((state) => state.users.loading);
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState('');
+  const [current, setCurrent] = useState(1);
+  const pageSizeRef = useRef(5);
+
   const isEditing = (record) => record.key === editingKey;
 
   const emptyItem = {
@@ -26,6 +29,7 @@ export const UserTable = () => {
 
   const addUser = () => {
     dispatch(addEmptyItem())
+    setCurrent(2)
     setTimeout(() => {
       window.scrollTo(0, document.body.scrollHeight);
     }, 0);
@@ -125,7 +129,20 @@ export const UserTable = () => {
           dataSource={list}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={{ defaultPageSize: 5, position: ['bottomCenter'] }}
+          pagination={{
+            defaultPageSize: pageSizeRef.current,
+            position: ['bottomCenter'],
+            current:current,
+            onChange:(newCurrent, newPageSize) => {
+              const pageSizeChange = pageSizeRef.current !== newPageSize;
+              if (pageSizeChange) {
+                setCurrent(1);
+              } else {
+                setCurrent(newCurrent);
+              }
+              pageSizeRef.current = newPageSize;
+            }}
+          }
         />
       </Form>
     </>
